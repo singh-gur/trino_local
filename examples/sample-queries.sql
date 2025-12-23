@@ -14,7 +14,7 @@ CREATE SCHEMA IF NOT EXISTS iceberg.examples;
 SHOW TABLES FROM iceberg.examples;
 
 -- Create a sample customers table
--- Note: Replace 'my-bucket' with your actual S3 bucket name
+-- Note: Replace 'datastore' with your actual S3 bucket name
 CREATE TABLE IF NOT EXISTS iceberg.examples.customers (
     customer_id BIGINT,
     first_name VARCHAR,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS iceberg.examples.customers (
     updated_at TIMESTAMP
 ) WITH (
     format = 'PARQUET',
-    location = 's3a://my-bucket/examples/customers'
+    location = 's3a://datastore/examples/customers'
 );
 
 -- Insert sample customer data
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS iceberg.examples.orders (
     order_date TIMESTAMP
 ) WITH (
     format = 'PARQUET',
-    location = 's3a://my-bucket/examples/orders',
+    location = 's3a://datastore/examples/orders',
     partitioning = ARRAY['day(order_date)']
 );
 
