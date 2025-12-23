@@ -144,11 +144,11 @@ test_trino_running() {
 
 test_trino_health() {
     print_test "Trino health endpoint"
-    if curl -sf http://localhost:8080/v1/info > /dev/null 2>&1; then
+    if curl -sf http://localhost:8081/v1/info > /dev/null 2>&1; then
         print_success "Trino is responding to health checks"
         
         # Get version info
-        local version=$(curl -s http://localhost:8080/v1/info | grep -o '"nodeVersion":"[^"]*"' | cut -d'"' -f4)
+        local version=$(curl -s http://localhost:8081/v1/info | grep -o '"nodeVersion":"[^"]*"' | cut -d'"' -f4)
         if [ -n "$version" ]; then
             print_info "Trino version: $version"
         fi
@@ -160,7 +160,7 @@ test_trino_health() {
 
 test_trino_catalogs() {
     print_test "Trino catalogs"
-    local catalogs=$(docker exec trino-server trino --execute "SHOW CATALOGS" 2>/dev/null || echo "")
+    local catalogs=$(docker exec trino-server trino --server localhost:8081 --execute "SHOW CATALOGS" 2>/dev/null || echo "")
     
     if echo "$catalogs" | grep -q "iceberg"; then
         print_success "Iceberg catalog is available"
@@ -207,8 +207,8 @@ test_s3_connectivity() {
 
 test_web_ui() {
     print_test "Web UI accessibility"
-    if curl -sf http://localhost:8080 > /dev/null 2>&1; then
-        print_success "Web UI is accessible at http://localhost:8080"
+    if curl -sf http://localhost:8081 > /dev/null 2>&1; then
+        print_success "Web UI is accessible at http://localhost:8081"
     else
         print_error "Web UI is not accessible"
         return 1

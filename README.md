@@ -24,7 +24,7 @@ just up
 just cli
 ```
 
-Trino Web UI: http://localhost:8080
+Trino Web UI: http://localhost:8081
 
 ## Configuration
 
@@ -123,7 +123,7 @@ See `examples/sample-queries.sql` for more SQL examples.
 To run the examples:
 ```bash
 # Edit examples/sample-queries.sql and replace 'my-bucket' with your bucket
-docker exec -it trino-server trino < examples/sample-queries.sql
+docker exec -it trino-server trino --server localhost:8081 < examples/sample-queries.sql
 ```
 
 ## Troubleshooting

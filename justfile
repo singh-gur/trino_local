@@ -19,7 +19,7 @@ setup:
 up:
     @echo "Starting Trino server..."
     @docker-compose up -d
-    @echo "✓ Trino started at http://localhost:8080"
+    @echo "✓ Trino started at http://localhost:8081"
 
 # Start Trino with logs
 up-logs:
@@ -44,17 +44,17 @@ logs:
 
 # Access Trino CLI
 cli:
-    @docker exec -it trino-server trino
+    @docker exec -it trino-server trino --server localhost:8081
 
 # Check Trino health
 health:
-    @curl -sf http://localhost:8080/v1/info | jq '.' || echo "✗ Trino not responding"
+    @curl -sf http://localhost:8081/v1/info | jq '.' || echo "✗ Trino not responding"
 
 # Open Web UI in browser
 web:
-    @command -v xdg-open >/dev/null && xdg-open http://localhost:8080 || \
-     command -v open >/dev/null && open http://localhost:8080 || \
-     echo "Open http://localhost:8080 in your browser"
+    @command -v xdg-open >/dev/null && xdg-open http://localhost:8081 || \
+     command -v open >/dev/null && open http://localhost:8081 || \
+     echo "Open http://localhost:8081 in your browser"
 
 # Stop and remove volumes
 clean:
@@ -81,11 +81,11 @@ test:
 
 # Execute a SQL query
 query QUERY:
-    @docker exec -it trino-server trino --execute "{{QUERY}}"
+    @docker exec -it trino-server trino --server localhost:8081 --execute "{{QUERY}}"
 
 # Execute SQL from a file
 query-file FILE:
-    @docker exec -i trino-server trino < {{FILE}}
+    @docker exec -i trino-server trino --server localhost:8081 < {{FILE}}
 
 # Show Iceberg schemas
 show-schemas:
