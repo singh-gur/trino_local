@@ -18,12 +18,20 @@ setup:
 # Start Trino server
 up:
     @echo "Starting Trino server..."
-    @docker-compose up -d
+    @if grep -q "COMPOSE_PROFILES=local-db" .env 2>/dev/null || [ -z "$(grep POSTGRES_URL .env 2>/dev/null)" ]; then \
+        docker-compose --profile local-db up -d; \
+    else \
+        docker-compose up -d; \
+    fi
     @echo "✓ Trino started at http://localhost:8081"
 
 # Start Trino with logs
 up-logs:
-    docker-compose up
+    @if grep -q "COMPOSE_PROFILES=local-db" .env 2>/dev/null || [ -z "$(grep POSTGRES_URL .env 2>/dev/null)" ]; then \
+        docker-compose --profile local-db up; \
+    else \
+        docker-compose up; \
+    fi
 
 # Stop Trino server
 down:
