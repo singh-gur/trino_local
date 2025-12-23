@@ -15,6 +15,13 @@ setup:
         echo "✓ .env already exists"
     fi
 
+# Generate password file for authentication
+gen-password USER PASSWORD:
+    @echo "Generating password for user {{USER}}..."
+    @mkdir -p security
+    @docker run --rm -v $(pwd)/security:/security httpd:alpine htpasswd -b -c /security/password.db {{USER}} {{PASSWORD}}
+    @echo "✓ Password file created at security/password.db"
+
 # Start Trino server
 up:
     @echo "Starting Trino server..."

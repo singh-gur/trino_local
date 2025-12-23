@@ -1,4 +1,6 @@
-# Environment variables
+# Secrets
+security/password.db
+
 .env
 
 # Backups
