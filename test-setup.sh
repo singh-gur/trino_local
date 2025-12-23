@@ -189,11 +189,17 @@ test_s3_connectivity() {
     # Extract host and port from endpoint
     local endpoint_url="${S3_ENDPOINT#http://}"
     endpoint_url="${endpoint_url#https://}"
+    endpoint_url="${endpoint_url%/}"
     local host="${endpoint_url%%:*}"
     local port="${endpoint_url##*:}"
     
     if [ "$host" = "$port" ]; then
-        port="9000"  # Default MinIO port
+        # No port specified, determine default based on scheme
+        if [[ "${S3_ENDPOINT}" == https://* ]]; then
+            port="443"
+        else
+            port="80"
+        fi
     fi
     
     if timeout 5 bash -c "cat < /dev/null > /dev/tcp/$host/$port" 2>/dev/null; then
