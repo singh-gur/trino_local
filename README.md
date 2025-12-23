@@ -38,6 +38,17 @@ S3_PATH_STYLE_ACCESS=true
 AWS_REGION=us-east-1
 ```
 
+### Authentication (Optional)
+
+You can enable password authentication by setting these variables in `.env`:
+
+```env
+TRINO_AUTHENTICATION_TYPE=PASSWORD
+TRINO_PASSWORD=your-secure-password
+```
+
+If not set, authentication is disabled (default).
+
 ### Memory Settings
 
 Edit `etc/jvm.config` to adjust heap size (default: 4GB):

@@ -17,6 +17,17 @@ services:
       - POSTGRES_URL=${POSTGRES_URL:-jdbc:postgresql://postgres:5432/iceberg_catalog}
       - POSTGRES_USER=${POSTGRES_USER:-trino}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-trino}
+      - TRINO_AUTHENTICATION_TYPE=${TRINO_AUTHENTICATION_TYPE}
+      - TRINO_PASSWORD=${TRINO_PASSWORD}
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        if [ ! -z "$${TRINO_PASSWORD}" ]; then
+          touch /etc/trino/password.db
+          htpasswd -b -c /etc/trino/password.db admin $${TRINO_PASSWORD}
+        fi
+        /usr/lib/trino/bin/launcher run --etc-dir /etc/trino
     volumes:
       - ./etc:/etc/trino
       - ./catalog:/etc/trino/catalog
