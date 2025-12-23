@@ -34,6 +34,7 @@ Trino Web UI: http://localhost:8080
 S3_ENDPOINT=http://your-s3-endpoint:9000
 S3_ACCESS_KEY=your-access-key
 S3_SECRET_KEY=your-secret-key
+S3_PATH_STYLE_ACCESS=true
 AWS_REGION=us-east-1
 ```
 
